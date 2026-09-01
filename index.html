@@ -10,7 +10,25 @@
 
 <body>
     <h1>My Library</h1>
-    <button>New Book</button>
+    <button command="show-modal" commandfor="dialog">New Book</button>
+
+    <dialog id="dialog">
+        <form action="" method="post" id="new-book-form">
+            <label for="book-title">Title: </label>
+            <input type="text" name="booktitle" id="book-title" required>
+
+            <label for="book-author">Author: </label>
+            <input type="text" name="bookauthor" id="book-author" required>
+
+            <label for="page-count">Page Count: </label>
+            <input type="number" name="bookpagecount" id="page-count" required>
+
+            <label for="book-read">Read? </label>
+            <input type="checkbox" name="bookread" id="book-read">
+        </form>
+        <button type="submit" form="new-book-form">Add Book</button>
+    </dialog>
+
     <table id="myTable">
         <thead>
             <tr>
