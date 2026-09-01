@@ -30,13 +30,29 @@ class Book {
     }
 }
 
-function addBookToLibrary() {
-    const book = new Book(window.prompt("Title: "), window.prompt("Author: "), window.prompt("Page count: "));
+const form = document.getElementById("new-book-form");
+const dialog = document.getElementById("dialog");
+const lib = [];
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    dialog.close();
+    addBookToLibrary(formData.get("booktitle"), formData.get("bookauthor"), formData.get("bookpagecount"), formData.get("bookread"));
+    form.reset();
+});
+
+function addBookToLibrary(title, author, pageCount, read = null) {
+    console.log(title, author, pageCount, read);
+    if (read == null) read = "Unread";
+    else read = "Read";
+    const book = new Book(title, author, pageCount, read);
     lib.push(book);
+    displayAllBooks(lib);
 }
 
-function addBookToTable(table, book) {
-    const row = table.insertRow();
+function addBookToTable(tbody, book) {
+    const row = tbody.insertRow();
     let titleCell = row.insertCell(0);
     let authorCell = row.insertCell(1);
     let pageCell = row.insertCell(2);
@@ -47,15 +63,16 @@ function addBookToTable(table, book) {
     readCell.innerText = book.getRead();
 }
 
-function addAllBooksToTable(table, lib) {
-
+function displayAllBooks(lib) {
+    tbody = document.querySelector("table").getElementsByTagName("tbody")[0];
+    tbody.innerText = '';
     for (const book of lib) {
-        addBookToTable(table, book);
+        addBookToTable(tbody, book);
     }
 }
+addBookToLibrary("Title", "Author", 100, null);
 
-const lib = [];
-const book = new Book("Title", "Author", 12);
-lib.push(book);
-const table = document.getElementById("myTable");
-addAllBooksToTable(table, lib);
+
+
+
+
