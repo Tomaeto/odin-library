@@ -60,13 +60,13 @@ function addBookToTable(tbody, book) {
     readCell.innerText = book.getRead();
 
     const delBtn = document.createElement("button");
-    delBtn.classList.add("delBtn");
+    delBtn.classList.add("table-btn");
     delBtn.innerText = "Delete from library";
     delBtn.addEventListener('click', deleteBtnEvent);
 
 
     const toggleBtn = document.createElement("button");
-    toggleBtn.classList.add("toggleBtn");
+    toggleBtn.classList.add("table-btn");
     toggleBtn.innerText = "Toggle read status";
     toggleBtn.addEventListener('click', toggleBtnEvent);
 
