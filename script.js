@@ -1,5 +1,5 @@
 class Book {
-    constructor(title, author, pageCount, read = "unread") {
+    constructor(title, author, pageCount, read) {
         this.title = title;
         this.author = author;
         this.pageCount = pageCount;
@@ -8,7 +8,7 @@ class Book {
     }
 
     toggleRead() {
-        this.read = "unread" ? this.read = "read" : this.read = "unread";
+        this.read == "Unread" ? this.read = "Read" : this.read = "Unread";
     }
     getInfo() {
         return `${this.title} by ${this.author}, ${this.pageCount} pages, ${this.read}`;
@@ -42,8 +42,8 @@ form.addEventListener('submit', (e) => {
     form.reset();
 });
 
-function addBookToLibrary(title, author, pageCount, read = null) {
-    if (read == null) read = "Unread";
+function addBookToLibrary(title, author, pageCount, read) {
+    if (read == null || read == "Unread") read = "Unread";
     else read = "Read";
     const book = new Book(title, author, pageCount, read);
     lib.push(book);
@@ -57,7 +57,7 @@ function addBookToTable(tbody, book) {
     let authorCell = row.insertCell(1);
     let pageCell = row.insertCell(2);
     let readCell = row.insertCell(3);
-    let deleteCell = row.insertCell(4);
+    let buttonCell = row.insertCell(4);
     titleCell.innerText = book.getTitle();
     authorCell.innerText = book.getAuthor();
     pageCell.innerText = book.getPageCount();
@@ -65,13 +65,26 @@ function addBookToTable(tbody, book) {
 
     const delBtn = document.createElement("button");
     delBtn.classList.add("delBtn");
-    delBtn.innerText = "Delete Book";
+    delBtn.innerText = "Delete from library";
     delBtn.addEventListener('click', () => {
         const id = row.dataset.id;
-        lib = lib.filter(book => {return book.getID() != id});
+        lib = lib.filter(book => { return book.getID() != id });
         displayAllBooks(lib);
     });
-    deleteCell.appendChild(delBtn);
+
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.classList.add("toggleBtn");
+    toggleBtn.innerText = "Toggle read status";
+    toggleBtn.addEventListener('click', () => {
+        const id = row.dataset.id;
+        const curBook = lib.find(book => { return book.getID() == id });
+        curBook.toggleRead();
+        displayAllBooks(lib);
+    });
+
+    buttonCell.appendChild(toggleBtn);
+    buttonCell.appendChild(delBtn);
 }
 
 function displayAllBooks(lib) {
@@ -81,8 +94,10 @@ function displayAllBooks(lib) {
         addBookToTable(tbody, book);
     }
 }
+
+
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 320, "Read");
-addBookToLibrary("Eragon", "Christopher Paolini", 544, null);
+addBookToLibrary("Eragon", "Christopher Paolini", 544, "Unread");
 
 
 
