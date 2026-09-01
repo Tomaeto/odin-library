@@ -32,7 +32,7 @@ class Book {
 
 const form = document.getElementById("new-book-form");
 const dialog = document.getElementById("dialog");
-const lib = [];
+let lib = [];
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -43,7 +43,6 @@ form.addEventListener('submit', (e) => {
 });
 
 function addBookToLibrary(title, author, pageCount, read = null) {
-    console.log(title, author, pageCount, read);
     if (read == null) read = "Unread";
     else read = "Read";
     const book = new Book(title, author, pageCount, read);
@@ -53,14 +52,26 @@ function addBookToLibrary(title, author, pageCount, read = null) {
 
 function addBookToTable(tbody, book) {
     const row = tbody.insertRow();
+    row.dataset.id = book.getID();
     let titleCell = row.insertCell(0);
     let authorCell = row.insertCell(1);
     let pageCell = row.insertCell(2);
     let readCell = row.insertCell(3);
+    let deleteCell = row.insertCell(4);
     titleCell.innerText = book.getTitle();
     authorCell.innerText = book.getAuthor();
     pageCell.innerText = book.getPageCount();
     readCell.innerText = book.getRead();
+
+    const delBtn = document.createElement("button");
+    delBtn.classList.add("delBtn");
+    delBtn.innerText = "Delete Book";
+    delBtn.addEventListener('click', () => {
+        const id = row.dataset.id;
+        lib = lib.filter(book => {return book.getID() != id});
+        displayAllBooks(lib);
+    });
+    deleteCell.appendChild(delBtn);
 }
 
 function displayAllBooks(lib) {
@@ -70,7 +81,8 @@ function displayAllBooks(lib) {
         addBookToTable(tbody, book);
     }
 }
-addBookToLibrary("Title", "Author", 100, null);
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 320, "Read");
+addBookToLibrary("Eragon", "Christopher Paolini", 544, null);
 
 
 
